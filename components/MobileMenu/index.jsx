@@ -33,6 +33,9 @@ const MobileMenu = () => {
             <Link href={"/"} onClick={() => setMenuIsOpen(false)}>
               Главная
             </Link>
+            <Link href={"/chat"} onClick={() => setMenuIsOpen(false)}>
+              Отзывы
+            </Link>
             <Link href={"/github"} onClick={() => setMenuIsOpen(false)}>
               GitHub
             </Link>

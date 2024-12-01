@@ -23,32 +23,33 @@ const Form = () => {
   const submit = (e) => {
     e.preventDefault();
     setIsSending(true);
-
-    const templateParams = {
-      from_name: name,
-      email: email,
-      subject: "Новое сообщение c портфолио",
-      message: message,
-    };
-
-    emailjs
-      .send(
-        EMAILJS_CONFIG.serviceID,
-        EMAILJS_CONFIG.templateID,
-        templateParams,
-        EMAILJS_CONFIG.publicKey,
-      )
-      .then(
-        () => {
-          // toast.success("Mensagem enviada");
+  
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+    const message = `Name: ${name}\nEmail: ${email}\nMessage: ${message}`;
+  
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ok) {
           console.log("Сообщение отправлено");
           clear();
-        },
-        (err) => {
-          // toast.error("Erro ao enviar mensagem");
-          console.error(err);
-        },
-      )
+        } else {
+          console.error("Ошибка при отправке сообщения");
+        }
+      })
+      .catch((error) => {
+        console.error("Ошибка при отправке сообщения:", error);
+      })
       .finally(() => setIsSending(false));
   };
 

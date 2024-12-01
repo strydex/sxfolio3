@@ -12,6 +12,7 @@ const Header = () => {
       </div>
       <div className="hidden w-full justify-end gap-8 sm:flex">
         <Link href={"/"}>Главная</Link>
+        <Link href={"/chat"}>Отзывы</Link>
         <Link href={"/github"}>Github</Link>
       </div>
     </div>

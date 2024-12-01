@@ -9,7 +9,7 @@ const Chat = () => {
   return (
     <main className="container flex flex-col items-center justify-center py-8 sm:py-[2%]">
       <Typewriter as="h1" className="text-3xl font-bold">
-        Chat global
+        Общий чат для комментариев
       </Typewriter>
       <BlinkingText>• チャット •</BlinkingText>
       <br />
