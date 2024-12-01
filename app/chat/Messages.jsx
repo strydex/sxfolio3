@@ -36,7 +36,7 @@ const Messages = async () => {
       </Box>
       <Box className="w-full p-6">
         <Typewriter as="h2" manager="decipher" className="text-2xl font-bold">
-          Cергей Рузин
+          Кристи
         </Typewriter>
         <Typewriter
           as="p"
@@ -47,7 +47,7 @@ const Messages = async () => {
       </Box>
       <Box className="w-full p-6">
         <Typewriter as="h2" manager="decipher" className="text-2xl font-bold">
-          Cергей Рузин
+          Александр Золотных
         </Typewriter>
         <Typewriter
           as="p"
