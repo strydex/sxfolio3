@@ -9,13 +9,13 @@ export const GET = async () => {
 
         if (data.length === 0) {
             return NextResponse.json({
-                message: "Nenhum dado encontrado",
+                message: "Данные не найдены",
                 status: 204
             })
         }
 
         return NextResponse.json({
-            message: "Mensagens coletadas",
+            message: "Messages are collected",
             status: 200,
             data
         })

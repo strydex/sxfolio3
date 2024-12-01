@@ -13,12 +13,12 @@ export const POST = async (req) => {
         await newChat.save()
 
         return NextResponse.json({
-            message: "Mensagem publicada",
+            message: "Сообщение опубликовано",
             status: 201
         })
     } catch (err) {
         return NextResponse.json({
-            message: "Erro ao publicar mensagem",
+            message: "Ошибка при публикации",
             status: 500
         })
     }
