@@ -26,7 +26,7 @@ const MobileMenu = () => {
             <BiX />
           </button>
           <div className="flex h-1/4 flex-col items-center justify-center bg-black">
-            <CyberpunkFont className="text-4xl">Joao Mororo</CyberpunkFont>
+            <CyberpunkFont className="text-4xl">Emir Strydex</CyberpunkFont>
             <BlinkingText>• メニュー •</BlinkingText>
           </div>
           <nav className="flex h-2/4 flex-col items-center justify-center gap-4 text-2xl">
