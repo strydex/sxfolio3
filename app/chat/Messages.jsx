@@ -20,8 +20,7 @@ const Messages = async () => {
           as="p"
           className="mt-4 border-l-4 border-solid border-l-text_color pl-4"
         >
-          Aqui você pode deixar uma messagem pública para interagir comigo e com
-          todos que vierem até aqui!
+          "Эмир превосходно сделал мне сайт, за 2 дня вместо обещанной недели, я в восторге"!
         </Typewriter>
       </Box>
       {messages &&

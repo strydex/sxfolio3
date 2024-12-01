@@ -11,10 +11,10 @@ const SubmitButton = () => {
     <Button type={"submit"}>
       {pending ? (
         <span>
-          <SiSpinrilla className="animate-spin" /> Enviando...
+          <SiSpinrilla className="animate-spin" /> Отправляем...
         </span>
       ) : (
-        <span>Enviar</span>
+        <span>Отправить</span>
       )}
     </Button>
   );

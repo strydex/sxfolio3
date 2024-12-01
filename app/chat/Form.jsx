@@ -37,7 +37,7 @@ const Form = () => {
   return (
     <form className="flex w-full flex-col gap-4 sm:w-2/3" action={submit}>
       <div className="flex flex-col">
-        <label htmlFor="name">Nome</label>
+        <label htmlFor="name">Имя</label>
         <input
           className="resize-none border-none bg-black p-4 text-accent outline-none"
           type="text"
@@ -46,7 +46,7 @@ const Form = () => {
         />
       </div>
       <div className="flex flex-col">
-        <label htmlFor="message">Mensagem</label>
+        <label htmlFor="message">Записка</label>
         <textarea
           className="resize-none border-none bg-black p-4 text-accent outline-none"
           name="message"
