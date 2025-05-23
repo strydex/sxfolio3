@@ -19,7 +19,7 @@ export default function Home() {
       <section className="flex h-[90vh] text-2xl">
         <div className="flex w-full flex-col items-start justify-center gap-4 sm:w-1/2">
           <Typewriter as="h1" className="text-5xl font-bold text-primary">
-            Хола, Чумба!
+            Привет, Странник!
           </Typewriter>
           <BlinkingText className="text-base sm:hidden">
             • こんにちは •
