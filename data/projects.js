@@ -5,12 +5,12 @@ const projects = [
     link: "https://viperlabs.tech/",
   },
   {
-    name: "Видеогалерея для Ремэкспо ЛТ",
-    image: "/images/projects/videoremexpo.gif",
+    name: "Видеогалерея Ремэкспо",
+    image: "/images/projects/videoremexpo.png",
     link: "https://video.remexpo.ru/",
   },
   {
-    name: "АстольфоДоро - Таймер личной продуктивности для аниме-фанов",
+    name: "АстольфоДоро - Таймер личной продуктивности",
     image: "/images/projects/astolfodoro.png",
     link: "https://astolfodoro.vercel.app/",
   },
