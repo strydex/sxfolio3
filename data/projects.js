@@ -1,27 +1,27 @@
 const projects = [
   {
-    name: "Портфолио веб-студии - Англ. версия 1.0",
-    image: "/images/projects/project-portfoliov1.png",
-    link: "https://folio.nofomo.dev/",
+    name: "Сайт Веб-Лаборатории Viper Labs",
+    image: "/images/projects/viper.gif",
+    link: "https://viperlabs.tech/",
   },
   {
-    name: "Sonex - Сайт подводного эхо-картирования",
-    image: "/images/projects/sonex.png",
-    link: "https://sonexai.com/platform.html/",
+    name: "Видеогалерея для Ремэкспо ЛТ",
+    image: "/images/projects/videoremexpo.gif",
+    link: "https://video.remexpo.ru/",
   },
   {
-    name: "Didactica - Сайт образовательной платформы",
-    image: "/images/projects/didactica.png",
-    link: "https://didactica.club/",
+    name: "АстольфоДоро - Таймер личной продуктивности для аниме-фанов",
+    image: "/images/projects/astolfodoro.png",
+    link: "https://astolfodoro.vercel.app/",
   },
   {
     name: "FRACTAL - Сайт компании по нейросетям",
     image: "/images/projects/frctl.png",
   },
   {
-    name: "No Fomo DEV - Сайт Веб-студии 2.0",
-    image: "/images/projects/nfmstudio.png",
-    link: "https://nofomo.dev/",
+    name: "Клон сайта Apple на Three.js (Pet-Project)",
+    image: "/images/projects/apple.png",
+    link: "https://sxappleclone.vercel.app/",
   },
   {
     name: "Communicode - Платформа поддержки ментального здоровья",
