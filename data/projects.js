@@ -19,7 +19,7 @@ const projects = [
     image: "/images/projects/frctl.png",
   },
   {
-    name: "Клон сайта Apple на Three.js (Pet-Project)",
+    name: "Клон сайта Apple",
     image: "/images/projects/apple.png",
     link: "https://sxappleclone.vercel.app/",
   },
