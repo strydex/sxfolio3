@@ -2,13 +2,11 @@
 
 import React from "react";
 import CyberpunkFont from "../CyberpunkFont";
-import { BsGithub, BsLinkedin, BsDiscord, BsTelegram } from "react-icons/bs";
-// import * as toast from "@/components/ToastComponent";
+import { BsGithub, BsTelegram } from "react-icons/bs";
+import { useLanguage } from "@/context/LanguageContext";
+
 const Footer = () => {
-  const copyDiscord = () => {
-    navigator.clipboard.writeText("sleepingbtw");
-    // toast.info("Usuário copiado");
-  };
+  const { t } = useLanguage();
 
   return (
     <div className="bg-black">
@@ -20,7 +18,7 @@ const Footer = () => {
           <CyberpunkFont className="text-3xl font-bold">
             Emir Strydex
           </CyberpunkFont>
-          <span className="hidden sm:block">all rights reserved</span>
+          <span className="hidden sm:block">{t.footer.rights}</span>
         </div>
         <div className="mt-4 flex items-center justify-center gap-4 sm:mt-0">
           <a
@@ -39,7 +37,9 @@ const Footer = () => {
           </a>
         </div>
         <div className="mt-8 block text-center sm:hidden">
-          <span>{new Date().getFullYear()} &copy; all rights reserved</span>
+          <span>
+            {new Date().getFullYear()} &copy; {t.footer.rights}
+          </span>
         </div>
       </footer>
     </div>

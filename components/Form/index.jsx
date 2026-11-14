@@ -4,15 +4,17 @@ import React, { useState } from "react";
 import Button from "../Button";
 import Input from "./Input";
 import emailjs from "@emailjs/browser";
-// import * as toast from "@/components/ToastComponent";
 import { EMAILJS_CONFIG } from "@/data/contants";
 import { SiSpinrilla } from "react-icons/si";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Form = () => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [message, setMessage] = useState();
+  const { t } = useLanguage();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState("");
 
   const clear = () => {
     setName("");
@@ -23,10 +25,11 @@ const Form = () => {
   const submit = (e) => {
     e.preventDefault();
     setIsSending(true);
+    setStatus("");
     const templateParams = {
       from_name: name,
       email: email,
-      subject: "Новое сообщение c портфолио",
+      subject: "New B2B Inquiry from sxfolio",
       message: message,
     };
     emailjs
@@ -38,65 +41,70 @@ const Form = () => {
       )
       .then(
         () => {
-          // toast.success("Mensagem enviada");
-          console.log("Сообщение отправлено");
+          setStatus(t.contact.sent);
           clear();
         },
-        (err) => {
-          // toast.error("Erro ao enviar mensagem");
-          console.error(err);
+        () => {
+          setStatus(t.contact.error);
         },
       )
       .finally(() => setIsSending(false));
   };
 
   return (
-    <form className="flex flex-wrap justify-end" onSubmit={submit}>
+    <form className="flex w-full flex-wrap justify-end" onSubmit={submit}>
       <div className="flex w-full flex-col p-2 sm:w-1/2">
-        <label htmlFor="name">Имя</label>
+        <label htmlFor="name">{t.contact.name}</label>
         <Input
           type="text"
           id="name"
-          placeholder="Имя"
+          placeholder={t.contact.name}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
       </div>
       <div className="flex w-full flex-col p-2 sm:w-1/2">
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">{t.contact.email}</label>
         <Input
-          type="email"
+          type="text"
           id="email"
-          placeholder="Email"
+          placeholder={t.contact.email}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
       <div className="flex w-full flex-col p-2">
-        <label htmlFor="message">Сообщение</label>
+        <label htmlFor="message">{t.contact.message}</label>
         <Input
           isTextarea
           name="message"
           id="message"
           cols="30"
-          rows="10"
-          placeholder="Написать сообщение..."
+          rows="6"
+          placeholder={t.contact.messagePlaceholder}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
-        ></Input>
+        />
       </div>
-      <Button type={"submit"} disabled={isSending}>
-        {isSending ? (
-          <span>
-            <SiSpinrilla className="animate-spin" /> Отправляем...
-          </span>
-        ) : (
-          <span>Отправить</span>
-        )}
-      </Button>
+      {status && (
+        <div className="w-full p-2 font-mono text-sm text-primary">
+          {status}
+        </div>
+      )}
+      <div className="p-2">
+        <Button type="submit" disabled={isSending}>
+          {isSending ? (
+            <span className="flex items-center gap-2">
+              <SiSpinrilla className="animate-spin" /> {t.contact.sending}
+            </span>
+          ) : (
+            <span>{t.contact.send}</span>
+          )}
+        </Button>
+      </div>
     </form>
   );
 };

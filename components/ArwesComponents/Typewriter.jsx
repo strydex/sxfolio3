@@ -14,7 +14,7 @@ const Typewriter = ({
 }) => {
   useEffect(() => {
     const audio = document.getElementById("audio-type");
-    audio.play();
+    audio?.play()?.catch(() => {});
   }, []);
 
   return (

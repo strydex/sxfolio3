@@ -1,11 +1,4 @@
-import { Share_Tech_Mono } from "next/font/google";
 import React from "react";
-
-const share_tech_mono = Share_Tech_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-});
 
 const Input = ({
   children,
@@ -24,7 +17,7 @@ const Input = ({
 
   return (
     <As
-      className={`border-none bg-black p-4 text-lg text-accent caret-primary outline-none ${share_tech_mono.className}`}
+      className="border-none bg-black p-4 font-mono text-lg text-accent caret-primary outline-none"
       type={type}
       id={id}
       value={value}

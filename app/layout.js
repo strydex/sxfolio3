@@ -1,49 +1,53 @@
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import LocalFont from 'next/font/local'
-import SoundsProvider from '@/components/ArwesComponents/SoundsProvider'
-import MobileMenu from '@/components/MobileMenu'
-import ScrollToTop from '@/components/ScrollToTop'
-import { VT323, Electrolize, Share_Tech_Mono } from 'next/font/google'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
-import './globals.css'
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import LocalFont from "next/font/local";
+import SoundsProvider from "@/components/ArwesComponents/SoundsProvider";
+import MobileMenu from "@/components/MobileMenu";
+import ScrollToTop from "@/components/ScrollToTop";
+import { LanguageProvider } from "@/context/LanguageContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./globals.css";
 
-// Fonts
-const vt323 = VT323({ subsets: ['latin'], variable: '--font-vt323', display: 'swap', weight: '400' })
-const electrolize = Electrolize({ subsets: ['latin'], variable: '--font-electrolize', display: 'swap', weight: '400' })
-const share_tech_mono = Share_Tech_Mono({ subsets: ['latin'], variable: '--font-share-tech-mono', display: 'swap', weight: '400' })
-const cyberpunk = LocalFont({ src: '../fonts/Cyberpunk-Regular.ttf', variable: '--font-cyberpunk', display: 'swap' })
+const cyberpunk = LocalFont({
+  src: "../fonts/Cyberpunk-Regular.ttf",
+  variable: "--font-cyberpunk",
+  display: "swap",
+});
 
 export const metadata = {
-  title: 'Emir Strydex - FullStack Developer',
-  description: 'Личное портфолио',
-}
+  title: "Emir Strydex — AI Agent Architect & Full-Stack Systems Engineer",
+  description:
+    "Autonomous AI Agents, B2B RAG pipelines, CRM/1C integrations, and high-load web systems.",
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt" className="scroll-smooth">
-      <body className={`${vt323.variable} ${electrolize.className} ${share_tech_mono.variable} ${cyberpunk.variable} text-text_color bg-background`}>
-        <SoundsProvider />
-        <ScrollToTop />
-        <MobileMenu />
-        <Header />
-        {children}
-        <Footer />
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
+    <html lang="en" className="scroll-smooth">
+      <body
+        className={`${cyberpunk.variable} bg-background font-mono text-text_color`}
+      >
+        <LanguageProvider>
+          <SoundsProvider />
+          <ScrollToTop />
+          <MobileMenu />
+          <Header />
+          {children}
+          <Footer />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
+        </LanguageProvider>
       </body>
     </html>
-  )
+  );
 }

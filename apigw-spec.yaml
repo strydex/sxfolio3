@@ -1,0 +1,26 @@
+openapi: 3.0.0
+info:
+  title: sxfolio
+  version: 1.0.0
+x-yc-apigateway:
+  service_account_id: ajevbr3ijm22oagsjpqf
+  execution_timeout: 30s
+paths:
+  /:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba7mdi2100imdimcmd4
+        service_account_id: ajevbr3ijm22oagsjpqf
+  /{path+}:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba7mdi2100imdimcmd4
+        service_account_id: ajevbr3ijm22oagsjpqf
+    parameters:
+      - name: path
+        in: path
+        required: true
+        schema:
+          type: string
