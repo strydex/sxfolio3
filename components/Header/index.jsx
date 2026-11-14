@@ -9,7 +9,7 @@ const Header = () => {
   const { lang, setLang, t } = useLanguage();
 
   return (
-    <div className="container flex items-center justify-between py-4">
+    <header className="container flex items-center justify-between py-4">
       <div className="py-4 sm:py-0">
         <Link href="/" className="hover:opacity-100">
           <CyberpunkFont className="text-3xl font-bold text-primary">
@@ -17,11 +17,12 @@ const Header = () => {
           </CyberpunkFont>
         </Link>
       </div>
-      <div className="hidden items-center justify-end gap-6 sm:flex">
+      <nav className="hidden items-center justify-end gap-6 sm:flex">
         <Link href="/">{t.nav.home}</Link>
         <Link href="/#cases">{t.nav.cases}</Link>
         <Link href="/chat">{t.nav.agent}</Link>
         <Link href="/github">{t.nav.github}</Link>
+        <Link href="/#contact">{t.nav.contact}</Link>
         <div className="ml-2 flex items-center border border-text_color/40 font-mono text-xs">
           <button
             type="button"
@@ -46,8 +47,8 @@ const Header = () => {
             RU
           </button>
         </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 

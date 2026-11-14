@@ -1,52 +1,133 @@
 import { NextResponse } from "next/server";
 
-const SYSTEM_PROMPT = `You are NETRUNNER AGENT, the AI Systems Architect assistant for Emir Strydex (@strydex, founder of Viper Labs).
-Your job: qualify B2B leads, explain how Emir's AI agents solve their operational pain, and guide them to book an audit or message @strydex on Telegram.
+const FOLDER_ID = process.env.YC_FOLDER_ID || "b1gdq32pe7ih51cn5lhn";
 
-Emir's Positioning:
-- Solo AI Systems Architect & Full-Stack Engineer (not an agency with junior handoffs).
-- Production AI = 80% reliable backend (APIs, PostgreSQL, Redis, Docker, CRM/1C integration, anti-hallucination guardrails) + 20% LLM orchestration.
-- Stack: Python (FastAPI, Aiogram), Node.js / Next.js, Docker, PostgreSQL, Redis, RAG / Vector DBs, n8n, Yandex Cloud Serverless.
+const SYSTEM_PROMPT = `Ты — цифровой AI-помощник Эмира (создателя студии Viper Labs).
+Твоя задача: понятным языком без лишнего технического жаргона помочь клиенту оценить, как внедрение AI-помощника окупится в его бизнесе, и предложить связаться с Эмиром в Telegram (@strydex) или через форму на сайте.
 
-4 Core B2B Solutions:
-1. B2B Suppliers & Wholesale: PDF/Excel RFQ parser + RAG over technical catalog -> draft quote in 1C/CRM in <60 sec.
-2. Clinics & High-Ticket B2C: 24/7 omnichannel qualifier (Telegram, WhatsApp, Avito) with live slot lookup & CRM booking (15s response).
-3. E-Commerce & Marketplaces: Text-to-SQL analytics agent over sales Postgres + L1 support agent connected to order status APIs (-70% support load).
-4. Real Estate & HR: Automated candidate/buyer scoring agent with Zoom calendar booking (3x faster screening).
+Что делает Эмир (прямой формат работы без агентств и посредников):
+1. Оптовые компании и B2B-поставщики: автоматический разбор входящих заявок/смет из PDF и Excel, поиск по прайсу/1С и сборка готового коммерческого предложения в CRM за 1 минуту.
+2. Клиники и сфера услуг: AI-администратор в Telegram, WhatsApp и Авито, который отвечает за 15 секунд 24/7, проверяет свободные окна и записывает клиента в CRM.
+3. Магазины на WB/Ozon и E-commerce: AI-помощник для ответов покупателям (статусы заказов, характеристики товаров) и быстрой аналитики продаж и остатков.
+4. Недвижимость и подбор персонала (HR): автоматический отбор резюме или заявок покупателей по критериям и запись подходящих людей на созвон.
 
-Engagement & Pricing Model:
-1. Paid Architecture Audit: 20,000 - 35,000 RUB ($250 - $400) — 1-2 calls, bottleneck breakdown, system architecture, ROI math.
-2. Production Pilot (1 core process, 2-3 weeks): 80,000 - 250,000 RUB ($1,000 - $3,000) — full backend, CRM integration, Docker deployment.
-3. Monthly Retainer / Support: 15,000 - 30,000 RUB/mo ($200 - $400/mo) — monitoring, token limits, prompt tuning.
+Ориентиры по бюджету и срокам:
+- Разбор процессов и схема внедрения (предпроектный аудит): 20 000 – 35 000 ₽ ($250–$400).
+- Запуск готового AI-помощника под ключ (за 2–3 недели): 80 000 – 250 000 ₽ ($1,000–$3,000).
+- Поддержка и доработка: 15 000 – 30 000 ₽/мес ($200–$400/мес).
 
-Rules:
-- Reply in the same language as the user's message (English or Russian).
-- Be concise, sharp, business-focused (talk ROI, speed, cost reduction, not buzzwords).
-- Always end with a clear next step: suggest leaving a request in the Contact form below or messaging @strydex on Telegram.`;
+Правила ответа:
+- Отвечай строго на том же языке, на котором написал пользователь (если по-русски — на русском, называй просто «Эмир» или «Эмиром» без фамилии; если на английском — на английском, Emir).
+- Пиши кратко, по делу, без воды и сложных терминов вроде "RAG", "векторные эмбеддинги", "оркестрация". Говори про экономию времени менеджеров, скорость ответа клиентам и окупаемость.
+- В конце предложи оставить контакт в форме ниже или написать Эмиру напрямую в Telegram: @strydex.`;
 
 function buildFallbackReply(lastMessage, lang) {
   const q = (lastMessage || "").toLowerCase();
-  const isRu =
-    lang === "ru" || /[а-яё]/i.test(lastMessage || "");
+  const isRu = lang === "ru" || /[а-яё]/i.test(lastMessage || "");
 
-  if (q.includes("pdf") || q.includes("1с") || q.includes("1c") || q.includes("опт") || q.includes("quote")) {
+  if (
+    q.includes("pdf") ||
+    q.includes("1с") ||
+    q.includes("1c") ||
+    q.includes("опт") ||
+    q.includes("смет") ||
+    q.includes("quote")
+  ) {
     return isRu
-      ? "Архитектура B2B-парсера смет: входящий PDF/Excel с почты или Telegram -> парсинг позиций и сопоставление с вашим прайсом/1С через RAG -> генерация готового черновика КП в CRM за ~60 секунд.\n\nСрок пилота: 2-3 недели. Вилка: 80 000 – 250 000 ₽ (предпроектный аудит — 20 000 – 35 000 ₽). Напишите @strydex в Telegram или оставьте заявку в форме ниже."
-      : "B2B Quote Parser architecture: incoming PDF/Excel via email or Telegram -> structured extraction + RAG matching against your 1C/price catalog -> draft quote created in CRM in <60 seconds.\n\nPilot timeline: 2-3 weeks. Budget: $1,000–$3,000 (Architecture Audit: $250–$400). Message @strydex on Telegram or use the contact form below.";
+      ? "Как работает AI-обработка смет для опта: клиент присылает список в PDF, Excel или письмом -> система распознает позиции, сверяет остатки и цены с вашей 1С или прайсом -> за 1 минуту собирает готовый черновик КП в CRM.\n\nСрок запуска: 2–3 недели. Бюджет пилота: 80 000 – 250 000 ₽ (предварительный разбор и схема — 20 000 – 35 000 ₽). Напишите Эмиру в Telegram (@strydex) или оставьте заявку в форме ниже."
+      : "How the B2B Quote Parser works: a client sends a messy PDF or Excel list -> the system matches items against your catalog/ERP -> generates a ready commercial quote in CRM in under 60 seconds.\n\nTimeline: 2–3 weeks. Pilot budget: $1,000–$3,000 (Architecture Audit: $250–$400). Message Emir on Telegram (@strydex) or use the form below.";
   }
 
-  if (q.includes("клиник") || q.includes("clinic") || q.includes("бот") || q.includes("bot")) {
+  if (
+    q.includes("клиник") ||
+    q.includes("clinic") ||
+    q.includes("бот") ||
+    q.includes("bot") ||
+    q.includes("запис")
+  ) {
     return isRu
-      ? "Для клиник и B2C-услуг ставим мультиканального AI-квалификатора (Telegram / WhatsApp / Авито): отвечает за 15 секунд 24/7, проверяет свободные слоты в CRM и записывает клиента без галлюцинаций по прайсу.\n\nСрок пилота: 2 недели. Вилка: 80 000 – 180 000 ₽. Окупается на 2-й месяц за счет экономии ФОТ и ночных лидов. Для старта напишите @strydex."
-      : "For clinics & B2C services, we deploy an omnichannel AI qualifier (Telegram / WhatsApp): 15-second response 24/7, live slot lookup, strict pricing guardrails, and direct CRM booking.\n\nPilot timeline: 2 weeks. Budget: $1,000–$2,200. Message @strydex on Telegram to schedule a 20-min architecture audit.";
+      ? "Для клиник и сферы услуг подключаем AI-администратора в Telegram, WhatsApp и Авито: отвечает за 15 секунд круглосуточно, не путается в прайсе, проверяет свободные окна и записывает в вашу CRM. Если вопрос нестандартный — тихо переводит на живого администратора.\n\nСрок запуска: 2 недели. Бюджет: от 80 000 ₽. Окупается на 2-й месяц за счет экономии на потерянных вечерних лидах. Напишите Эмиру в Telegram: @strydex."
+      : "For clinics and service businesses, we set up a 24/7 AI assistant in Telegram & WhatsApp: replies in 15 seconds, checks open slots, and books straight into your CRM.\n\nTimeline: 2 weeks. Budget: from $1,000. Message Emir on Telegram (@strydex) to discuss your workflow.";
   }
 
   return isRu
-    ? "Формат работы с Эмиром Страйдеком:\n1) Предпроектный аудит и архитектура: 20 000 – 35 000 ₽ (схема интеграции + расчет ROI).\n2) Боевой пилот на 1 процесс (2–3 недели): 80 000 – 250 000 ₽ (Python/Next.js, Docker, CRM/1С).\n3) Поддержка: 15 000 – 30 000 ₽/мес.\n\nОпишите вашу нишу или напишите напрямую в Telegram: @strydex."
-    : "Engagement model with Emir Strydex:\n1) Architecture Audit: $250–$400 (system blueprint + ROI calculation).\n2) Production Pilot (2–3 weeks): $1,000–$3,000 (Dockerized backend + CRM/ERP integration).\n3) Monthly Retainer: $200–$400/mo.\n\nDescribe your workflow or message @strydex on Telegram.";
+    ? "Формат работы с Эмиром:\n1. Разбор задачи и схема внедрения: 20 000 – 35 000 ₽ (показываем, где бизнес теряет деньги и как окупить систему).\n2. Запуск рабочего AI-помощника под ключ (2–3 недели): 80 000 – 250 000 ₽.\n3. Поддержка и доработка: 15 000 – 30 000 ₽/мес.\n\nОпишите вашу нишу здесь или напишите Эмиру напрямую в Telegram: @strydex."
+    : "How working with Emir works:\n1. Process Audit & Blueprint: $250–$400 (pinpointing bottlenecks and ROI).\n2. Production Pilot (2–3 weeks): $1,000–$3,000 (end-to-end integration with your CRM/tools).\n3. Monthly Support: $200–$400/mo.\n\nTell me about your business here or message @strydex on Telegram.";
 }
 
-async function callUpstream(url, apiKey, model, messages) {
+async function getYandexMetadataToken() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 2000);
+  try {
+    const res = await fetch(
+      "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token",
+      {
+        headers: { "Metadata-Flavor": "Google" },
+        signal: controller.signal,
+      },
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.access_token || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function callYandexGPT(messages) {
+  const iamToken =
+    process.env.YC_IAM_TOKEN || (await getYandexMetadataToken());
+  const apiKey = process.env.YC_API_KEY;
+  if (!iamToken && !apiKey) {
+    throw new Error("No Yandex credentials");
+  }
+
+  const headers = {
+    "Content-Type": "application/json",
+    "x-folder-id": FOLDER_ID,
+    Authorization: iamToken ? `Bearer ${iamToken}` : `Api-Key ${apiKey}`,
+  };
+
+  const ycMessages = [
+    { role: "system", text: SYSTEM_PROMPT },
+    ...messages.slice(-8).map((m) => ({
+      role: m.role === "assistant" ? "assistant" : "user",
+      text: String(m.content || ""),
+    })),
+  ];
+
+  for (const modelName of ["yandexgpt/latest", "yandexgpt-lite/latest"]) {
+    try {
+      const res = await fetch(
+        "https://llm.api.cloud.yandex.net/foundationModels/v1/completion",
+        {
+          method: "POST",
+          headers,
+          body: JSON.stringify({
+            modelUri: `gpt://${FOLDER_ID}/${modelName}`,
+            completionOptions: {
+              stream: false,
+              temperature: 0.45,
+              maxTokens: 450,
+            },
+            messages: ycMessages,
+          }),
+        },
+      );
+      if (!res.ok) continue;
+      const data = await res.json();
+      const text = data?.result?.alternatives?.[0]?.message?.text;
+      if (text) return { reply: text, source: modelName };
+    } catch {
+      // try next model
+    }
+  }
+  throw new Error("YandexGPT failed");
+}
+
+async function callOpenAICompatible(url, apiKey, model, messages) {
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -60,9 +141,7 @@ async function callUpstream(url, apiKey, model, messages) {
       temperature: 0.5,
     }),
   });
-  if (!res.ok) {
-    throw new Error(`Upstream ${res.status}`);
-  }
+  if (!res.ok) throw new Error(`Upstream ${res.status}`);
   const data = await res.json();
   const reply = data?.choices?.[0]?.message?.content;
   if (!reply) throw new Error("Empty completion");
@@ -77,35 +156,44 @@ export async function POST(req) {
     const lastUserMsg =
       [...messages].reverse().find((m) => m.role === "user")?.content || "";
 
-    const vercelKey = process.env.VERCEL_AI_GATEWAY_API_KEY;
-    const openrouterKey = process.env.OPENROUTER_API_KEY;
+    // 1. Primary: YandexGPT inside Yandex Cloud (fast, no blocks in RU)
+    try {
+      const ycRes = await callYandexGPT(messages);
+      return NextResponse.json(ycRes);
+    } catch {
+      // continue to secondary providers
+    }
 
-    if (vercelKey) {
+    // 2. Secondary: OpenRouter free/paid fallback
+    if (process.env.OPENROUTER_API_KEY) {
+      for (const model of [
+        "deepseek/deepseek-chat-v3-0324:free",
+        "google/gemini-2.0-flash-exp:free",
+        "openai/gpt-4o-mini",
+      ]) {
+        try {
+          const reply = await callOpenAICompatible(
+            "https://openrouter.ai/api/v1/chat/completions",
+            process.env.OPENROUTER_API_KEY,
+            model,
+            messages,
+          );
+          return NextResponse.json({ reply, source: `openrouter:${model}` });
+        } catch {}
+      }
+    }
+
+    // 3. Tertiary: Vercel AI Gateway
+    if (process.env.VERCEL_AI_GATEWAY_API_KEY) {
       try {
-        const reply = await callUpstream(
+        const reply = await callOpenAICompatible(
           "https://ai-gateway.vercel.sh/v1/chat/completions",
-          vercelKey,
+          process.env.VERCEL_AI_GATEWAY_API_KEY,
           "deepseek/deepseek-v4.1-flash",
           messages,
         );
         return NextResponse.json({ reply, source: "vercel-gateway" });
-      } catch {
-        // fallback to OpenRouter or deterministic mode
-      }
-    }
-
-    if (openrouterKey) {
-      try {
-        const reply = await callUpstream(
-          "https://openrouter.ai/api/v1/chat/completions",
-          openrouterKey,
-          "openai/gpt-4o-mini",
-          messages,
-        );
-        return NextResponse.json({ reply, source: "openrouter" });
-      } catch {
-        // fallback to deterministic mode
-      }
+      } catch {}
     }
 
     return NextResponse.json({
@@ -116,7 +204,7 @@ export async function POST(req) {
     return NextResponse.json(
       {
         reply:
-          "Terminal connection interrupted. Reach Emir directly on Telegram: @strydex.",
+          "Связь с терминалом прервалась. Напишите Эмиру напрямую в Telegram: @strydex.",
         source: "error-fallback",
       },
       { status: 200 },

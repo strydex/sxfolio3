@@ -12,7 +12,7 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
   ]);
   const [input, setInput] = useState(initialPrompt);
   const [loading, setLoading] = useState(false);
-  const bottomRef = useRef(null);
+  const scrollBoxRef = useRef(null);
 
   useEffect(() => {
     setMessages((prev) => {
@@ -29,9 +29,12 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
     }
   }, [initialPrompt]);
 
+  // Only scroll inside the chat box itself, never scroll the whole page on initial render
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (messages.length > 1 && scrollBoxRef.current) {
+      scrollBoxRef.current.scrollTop = scrollBoxRef.current.scrollHeight;
+    }
+  }, [messages, loading]);
 
   const sendMessage = async (textOverride) => {
     const text = (textOverride ?? input).trim();
@@ -55,7 +58,9 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
           role: "assistant",
           content:
             data.reply ||
-            "No response received. Contact @strydex directly on Telegram.",
+            (lang === "ru"
+              ? "Нет ответа. Напишите Эмиру напрямую в Telegram: @strydex."
+              : "No response received. Message Emir on Telegram: @strydex."),
         },
       ]);
     } catch {
@@ -65,8 +70,8 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
           role: "assistant",
           content:
             lang === "ru"
-              ? "Сбой соединения с терминалом. Напишите Эмиру напрямую в Telegram: @strydex."
-              : "Terminal link failed. Reach Emir directly on Telegram: @strydex.",
+              ? "Сбой соединения. Напишите Эмиру напрямую в Telegram: @strydex."
+              : "Connection interrupted. Reach Emir directly on Telegram: @strydex.",
         },
       ]);
     } finally {
@@ -98,26 +103,33 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
             key={preset}
             type="button"
             onClick={() => sendMessage(preset)}
-            className="border border-text_color/40 bg-background/80 px-3 py-1 font-mono text-xs text-secondary transition hover:border-primary hover:text-primary"
+            className="border border-text_color/40 bg-background/80 px-3 py-1.5 font-mono text-xs text-secondary transition hover:border-primary hover:text-primary"
           >
             &gt; {preset}
           </button>
         ))}
       </div>
 
-      {/* Messages */}
-      <div className="mb-4 flex h-80 flex-col gap-3 overflow-y-auto border border-text_color/20 bg-black/50 p-4 font-mono text-sm">
+      {/* Messages inside self-contained scrollable box */}
+      <div
+        ref={scrollBoxRef}
+        className="mb-4 flex h-80 flex-col gap-3 overflow-y-auto border border-text_color/20 bg-black/50 p-4 font-mono text-sm"
+      >
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`whitespace-pre-wrap leading-relaxed ${
+            className={`max-w-[90%] whitespace-pre-wrap leading-relaxed ${
               msg.role === "user"
                 ? "self-end border-r-2 border-primary pr-3 text-right text-primary"
                 : "self-start border-l-2 border-text_color pl-3 text-secondary"
             }`}
           >
             <div className="mb-1 text-[11px] uppercase opacity-60">
-              {msg.role === "user" ? "CLIENT" : "NETRUNNER_AI"}
+              {msg.role === "user"
+                ? lang === "ru"
+                  ? "КЛИЕНТ"
+                  : "CLIENT"
+                : "AI_ASSISTANT"}
             </div>
             {msg.content}
           </div>
@@ -127,7 +139,6 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
             {t.terminal.thinking}
           </div>
         )}
-        <div ref={bottomRef} />
       </div>
 
       {/* Input */}

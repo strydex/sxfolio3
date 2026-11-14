@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" fill="none">
+  <rect width="800" height="480" fill="#021114"/>
+  <g stroke="#05d9e8" stroke-opacity="0.12" stroke-width="1">
+    <path d="M0 60H800M0 120H800M0 180H800M0 240H800M0 300H800M0 360H800M0 420H800"/>
+    <path d="M80 0V480M160 0V480M240 0V480M320 0V480M400 0V480M480 0V480M560 0V480M640 0V480M720 0V480"/>
+  </g>
+  <rect x="40" y="40" width="720" height="400" stroke="#05d9e8" stroke-opacity="0.4" fill="#031a1f" fill-opacity="0.85"/>
+  <rect x="40" y="40" width="720" height="36" fill="#05d9e8" fill-opacity="0.14"/>
+  <circle cx="64" cy="58" r="5" fill="#ff0000"/>
+  <circle cx="84" cy="58" r="5" fill="#defe47"/>
+  <circle cx="104" cy="58" r="5" fill="#05d9e8"/>
+  <text x="128" y="63" fill="#d1f7ff" font-family="monospace" font-size="14">B2B_QUOTE_PARSER // 1C_SYNC.SYS</text>
+  <!-- Left box: Incoming PDF/XLS -->
+  <rect x="70" y="110" width="190" height="230" stroke="#ff0000" stroke-width="1.5" fill="#0a0f14"/>
+  <text x="90" y="140" fill="#ff0000" font-family="monospace" font-size="13" font-weight="bold">INCOMING RFQ</text>
+  <rect x="90" y="160" width="150" height="28" stroke="#05d9e8" stroke-opacity="0.5" fill="#021114"/>
+  <text x="100" y="179" fill="#d1f7ff" font-family="monospace" font-size="12">smeta_2026.pdf</text>
+  <rect x="90" y="200" width="150" height="28" stroke="#05d9e8" stroke-opacity="0.5" fill="#021114"/>
+  <text x="100" y="219" fill="#d1f7ff" font-family="monospace" font-size="12">zakaz_list.xlsx</text>
+  <rect x="90" y="240" width="150" height="70" stroke="#05d9e8" stroke-opacity="0.3" fill="#021114"/>
+  <text x="100" y="262" fill="#05d9e8" font-family="monospace" font-size="11">42 unformatted</text>
+  <text x="100" y="280" fill="#05d9e8" font-family="monospace" font-size="11">SKU lines parsed</text>
+  <text x="100" y="298" fill="#defe47" font-family="monospace" font-size="11">0 manual work</text>
+  <!-- Arrow 1 -->
+  <path d="M270 225H325" stroke="#defe47" stroke-width="2.5"/>
+  <polygon points="325,219 338,225 325,231" fill="#defe47"/>
+  <!-- Middle box: AI Core -->
+  <rect x="345" y="125" width="140" height="200" stroke="#defe47" stroke-width="2" fill="#061f24"/>
+  <text x="372" y="158" fill="#defe47" font-family="monospace" font-size="14" font-weight="bold">AI ENGINE</text>
+  <circle cx="415" cy="225" r="36" stroke="#05d9e8" stroke-width="2" stroke-dasharray="6 4"/>
+  <circle cx="415" cy="225" r="22" stroke="#defe47" stroke-width="2"/>
+  <text x="398" y="230" fill="#defe47" font-family="monospace" font-size="13" font-weight="bold">60s</text>
+  <text x="366" y="290" fill="#d1f7ff" font-family="monospace" font-size="11">Catalog + 1C</text>
+  <text x="378" y="308" fill="#05d9e8" font-family="monospace" font-size="11">Auto-Match</text>
+  <!-- Arrow 2 -->
+  <path d="M495 225H545" stroke="#defe47" stroke-width="2.5"/>
+  <polygon points="545,219 558,225 545,231" fill="#defe47"/>
+  <!-- Right box: Output CRM Quote -->
+  <rect x="565" y="110" width="165" height="230" stroke="#05d9e8" stroke-width="1.5" fill="#0a0f14"/>
+  <text x="585" y="140" fill="#05d9e8" font-family="monospace" font-size="13" font-weight="bold">CRM DRAFT KP</text>
+  <rect x="582" y="160" width="131" height="100" fill="#021114" stroke="#defe47" stroke-opacity="0.5"/>
+  <text x="592" y="182" fill="#defe47" font-family="monospace" font-size="11">SKU #1042  OK</text>
+  <text x="592" y="202" fill="#defe47" font-family="monospace" font-size="11">SKU #2209  OK</text>
+  <text x="592" y="222" fill="#defe47" font-family="monospace" font-size="11">SKU #8814  OK</text>
+  <text x="592" y="244" fill="#d1f7ff" font-family="monospace" font-size="11">Total: Ready</text>
+  <rect x="582" y="278" width="131" height="36" fill="#defe47"/>
+  <text x="596" y="301" fill="#021114" font-family="monospace" font-size="12" font-weight="bold">SENT TO CLIENT</text>
+  <text x="70" y="395" fill="#05d9e8" font-family="monospace" font-size="13">SPEED: 40 MIN -&gt; 60 SEC  |  ZERO HUMAN ERRORS</text>
+</svg>

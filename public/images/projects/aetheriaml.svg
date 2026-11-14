@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" fill="none">
+  <rect width="800" height="480" fill="#02080b"/>
+  <g stroke="#d1f7ff" stroke-opacity="0.08" stroke-width="1">
+    <path d="M0 60H800M0 120H800M0 180H800M0 240H800M0 300H800M0 360H800M0 420H800"/>
+    <path d="M80 0V480M160 0V480M240 0V480M320 0V480M400 0V480M480 0V480M560 0V480M640 0V480M720 0V480"/>
+  </g>
+  <defs>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#05d9e8"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+  </defs>
+  <rect x="40" y="40" width="720" height="400" stroke="url(#chrome)" stroke-opacity="0.6" fill="#050b10"/>
+  <circle cx="400" cy="215" r="105" stroke="url(#chrome)" stroke-width="2" stroke-dasharray="10 6"/>
+  <circle cx="400" cy="215" r="72" stroke="#defe47" stroke-width="1.5"/>
+  <circle cx="400" cy="215" r="36" fill="#05d9e8" fill-opacity="0.15" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="315" y="222" fill="#ffffff" font-family="monospace" font-size="24" font-weight="bold" letter-spacing="4">AETHERIA ML</text>
+  <text x="275" y="355" fill="#d1f7ff" font-family="monospace" font-size="14">DIGITAL TWINS // MEMORY ARCHIVE // R&amp;D</text>
+  <rect x="315" y="375" width="170" height="28" stroke="#defe47" fill="#021114"/>
+  <text x="336" y="394" fill="#defe47" font-family="monospace" font-size="12">STATUS: IN DEV</text>
+</svg>

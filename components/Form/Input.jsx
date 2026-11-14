@@ -1,4 +1,10 @@
+import LocalFont from "next/font/local";
 import React from "react";
+
+const share_tech_mono = LocalFont({
+  src: "../../fonts/ShareTechMono.woff2",
+  display: "swap",
+});
 
 const Input = ({
   children,
@@ -17,7 +23,7 @@ const Input = ({
 
   return (
     <As
-      className="border-none bg-black p-4 font-mono text-lg text-accent caret-primary outline-none"
+      className={`border-none bg-black p-4 text-lg text-accent caret-primary outline-none ${share_tech_mono.className}`}
       type={type}
       id={id}
       value={value}

@@ -9,6 +9,21 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
+const vt323 = LocalFont({
+  src: "../fonts/VT323.woff2",
+  variable: "--font-vt323",
+  display: "swap",
+});
+const electrolize = LocalFont({
+  src: "../fonts/Electrolize.woff2",
+  variable: "--font-electrolize",
+  display: "swap",
+});
+const share_tech_mono = LocalFont({
+  src: "../fonts/ShareTechMono.woff2",
+  variable: "--font-share-tech-mono",
+  display: "swap",
+});
 const cyberpunk = LocalFont({
   src: "../fonts/Cyberpunk-Regular.ttf",
   variable: "--font-cyberpunk",
@@ -16,16 +31,16 @@ const cyberpunk = LocalFont({
 });
 
 export const metadata = {
-  title: "Emir Strydex — AI Agent Architect & Full-Stack Systems Engineer",
+  title: "Emir Strydex — AI Solutions & Full-Stack Systems",
   description:
-    "Autonomous AI Agents, B2B RAG pipelines, CRM/1C integrations, and high-load web systems.",
+    "AI assistants, automated sales & CRM pipelines, and web platforms for modern business.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${cyberpunk.variable} bg-background font-mono text-text_color`}
+        className={`${vt323.variable} ${electrolize.className} ${share_tech_mono.variable} ${cyberpunk.variable} bg-background text-text_color`}
       >
         <LanguageProvider>
           <SoundsProvider />

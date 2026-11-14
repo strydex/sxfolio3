@@ -15,7 +15,7 @@ const MobileMenu = () => {
   return (
     <>
       {menuIsOpen ? (
-        <div className="fixed inset-0 z-20 h-screen w-screen bg-background">
+        <div className="fixed inset-0 z-30 h-screen w-screen bg-background">
           <button
             className="absolute right-8 top-8 text-4xl"
             onClick={() => setMenuIsOpen(false)}
@@ -38,6 +38,9 @@ const MobileMenu = () => {
             </Link>
             <Link href="/github" onClick={() => setMenuIsOpen(false)}>
               {t.nav.github}
+            </Link>
+            <Link href="/#contact" onClick={() => setMenuIsOpen(false)}>
+              {t.nav.contact}
             </Link>
             <div className="mt-2 flex items-center border border-text_color/40 font-mono text-sm">
               <button

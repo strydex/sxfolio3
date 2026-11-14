@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" fill="none">
+  <rect width="800" height="480" fill="#021114"/>
+  <g stroke="#05d9e8" stroke-opacity="0.12" stroke-width="1">
+    <path d="M0 60H800M0 120H800M0 180H800M0 240H800M0 300H800M0 360H800M0 420H800"/>
+    <path d="M80 0V480M160 0V480M240 0V480M320 0V480M400 0V480M480 0V480M560 0V480M640 0V480M720 0V480"/>
+  </g>
+  <rect x="40" y="40" width="720" height="400" stroke="#05d9e8" stroke-opacity="0.4" fill="#031a1f" fill-opacity="0.85"/>
+  <rect x="40" y="40" width="720" height="36" fill="#05d9e8" fill-opacity="0.14"/>
+  <circle cx="64" cy="58" r="5" fill="#ff0000"/>
+  <circle cx="84" cy="58" r="5" fill="#defe47"/>
+  <circle cx="104" cy="58" r="5" fill="#05d9e8"/>
+  <text x="128" y="63" fill="#d1f7ff" font-family="monospace" font-size="14">ECOM_COPILOT // WB + OZON + ANALYTICS</text>
+  <!-- Left metrics & chart -->
+  <rect x="70" y="105" width="320" height="250" stroke="#05d9e8" stroke-width="1.5" fill="#021114"/>
+  <text x="90" y="135" fill="#defe47" font-family="monospace" font-size="13" font-weight="bold">MARGIN &amp; STOCK AI</text>
+  <rect x="90" y="155" width="280" height="32" fill="#0a242b"/>
+  <text x="100" y="176" fill="#d1f7ff" font-family="monospace" font-size="11">&gt; "Show low-stock SKU top 5"</text>
+  <!-- Bars -->
+  <rect x="100" y="260" width="34" height="70" fill="#05d9e8"/>
+  <rect x="150" y="230" width="34" height="100" fill="#defe47"/>
+  <rect x="200" y="205" width="34" height="125" fill="#05d9e8"/>
+  <rect x="250" y="245" width="34" height="85" fill="#ff0000"/>
+  <rect x="300" y="215" width="34" height="115" fill="#defe47"/>
+  <!-- Right L1 Support -->
+  <rect x="415" y="105" width="315" height="250" stroke="#defe47" stroke-width="1.5" fill="#0a0f14"/>
+  <text x="435" y="135" fill="#05d9e8" font-family="monospace" font-size="13" font-weight="bold">L1 CUSTOMER SUPPORT</text>
+  <rect x="435" y="155" width="275" height="54" fill="#021114" stroke="#05d9e8" stroke-opacity="0.4"/>
+  <text x="447" y="178" fill="#d1f7ff" font-family="monospace" font-size="11">Order #84920 status?</text>
+  <text x="447" y="197" fill="#defe47" font-family="monospace" font-size="11">AI: In transit, ETA tomorrow</text>
+  <rect x="435" y="225" width="275" height="54" fill="#021114" stroke="#05d9e8" stroke-opacity="0.4"/>
+  <text x="447" y="248" fill="#d1f7ff" font-family="monospace" font-size="11">Fits model X-200?</text>
+  <text x="447" y="267" fill="#defe47" font-family="monospace" font-size="11">AI: Yes, specs verified.</text>
+  <rect x="435" y="298" width="275" height="36" fill="#defe47"/>
+  <text x="462" y="321" fill="#021114" font-family="monospace" font-size="13" font-weight="bold">-70% SUPPORT LOAD</text>
+  <text x="70" y="395" fill="#05d9e8" font-family="monospace" font-size="13">INSTANT REPORTS  |  AUTO-REPLIES ON MARKETPLACES</text>
+</svg>

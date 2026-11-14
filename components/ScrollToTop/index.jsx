@@ -1,32 +1,33 @@
 "use client";
 
+import { useEffect } from "react";
 import Button from "../Button";
 import { IoIosArrowUp } from "react-icons/io";
 import styles from "./ToTopButton.module.css";
 
 const ToTopButton = () => {
   const toTop = () => {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const scrollFunction = () => {
-    let mybutton = document.getElementsByClassName("toTopButton")[0];
-    if (
-      document.body.scrollTop > 20 ||
-      document.documentElement.scrollTop > 20
-    ) {
-      mybutton.style.display = "flex";
-    } else {
-      mybutton.style.display = "none";
-    }
-  };
-
-  if (typeof window !== "undefined") {
-    window.onscroll = function () {
-      scrollFunction();
+  useEffect(() => {
+    const scrollFunction = () => {
+      const mybutton = document.getElementsByClassName("toTopButton")[0];
+      if (!mybutton) return;
+      if (
+        document.body.scrollTop > 120 ||
+        document.documentElement.scrollTop > 120
+      ) {
+        mybutton.style.display = "flex";
+      } else {
+        mybutton.style.display = "none";
+      }
     };
-  }
+
+    scrollFunction();
+    window.addEventListener("scroll", scrollFunction, { passive: true });
+    return () => window.removeEventListener("scroll", scrollFunction);
+  }, []);
 
   return (
     <Button className={`${styles.scrollButton} toTopButton`} onClick={toTop}>
