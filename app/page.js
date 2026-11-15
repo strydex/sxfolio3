@@ -114,7 +114,7 @@ export default function Home() {
           </h2>
           {t.capabilities.leftItems.map((item) => (
             <Box key={item.summary} className="my-2 w-full">
-              <details className="w-full p-3 text-left" open>
+              <details className="w-full p-3 text-left">
                 <summary className="cursor-pointer font-bold text-primary">
                   {item.summary}
                 </summary>
@@ -131,7 +131,7 @@ export default function Home() {
           </h2>
           {t.capabilities.rightItems.map((item) => (
             <Box key={item.summary} className="my-2 w-full">
-              <details className="w-full p-3 text-left" open>
+              <details className="w-full p-3 text-left">
                 <summary className="cursor-pointer font-bold text-primary">
                   {item.summary}
                 </summary>

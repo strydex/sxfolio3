@@ -29,6 +29,7 @@ const Form = () => {
 
     let delivered = false;
 
+    // 1. Server-side Telegram relay (token kept securely on server)
     try {
       const apiRes = await fetch("/api/contact", {
         method: "POST",
@@ -39,20 +40,23 @@ const Form = () => {
       if (apiData?.ok) delivered = true;
     } catch {}
 
-    try {
-      await emailjs.send(
-        EMAILJS_CONFIG.serviceID,
-        EMAILJS_CONFIG.templateID,
-        {
-          from_name: name,
-          email,
-          subject: "New B2B Inquiry from sxfolio",
-          message,
-        },
-        EMAILJS_CONFIG.publicKey,
-      );
-      delivered = true;
-    } catch {}
+    // 2. EmailJS fallback
+    if (!delivered) {
+      try {
+        await emailjs.send(
+          EMAILJS_CONFIG.serviceID,
+          EMAILJS_CONFIG.templateID,
+          {
+            from_name: name,
+            email,
+            subject: "New B2B Inquiry from sxfolio",
+            message,
+          },
+          EMAILJS_CONFIG.publicKey,
+        );
+        delivered = true;
+      } catch {}
+    }
 
     if (delivered) {
       setStatus(t.contact.sent);
