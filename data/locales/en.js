@@ -2,65 +2,65 @@ const en = {
   nav: {
     home: "Home",
     cases: "Cases",
-    agent: "AI Terminal",
+    agent: "Camio AI",
     github: "GitHub",
     contact: "Contact",
   },
   hero: {
-    badge: "AI AUTOMATION & FULL-STACK SYSTEMS",
-    title: "AI Assistants & Systems That Sell 24/7",
+    badge: "AI AGENTS & FULL-STACK SYSTEMS",
+    title: "AI Agents & Systems That Work 24/7",
     subtitle:
-      "I am Emir Strydex. I build custom AI assistants, automated request parsers, and fast web platforms that answer every client in 15 seconds, integrate with your CRM/ERP, and cut manual team routine by up to 70%.",
-    ctaPrimary: "Launch AI Terminal",
+      "Hi, I am Emir. I build custom AI Agents, automated request processing, and end-to-end web platforms. My systems reply to every client in 15 seconds, integrate with your CRM or ERP, and eliminate up to 70% of team routine.",
+    ctaPrimary: "Ask Camio AI",
     ctaSecondary: "Discuss Project",
     metrics: [
       { value: "15s", label: "Client Reply 24/7" },
-      { value: "-70%", label: "Manual Routine" },
+      { value: "-70%", label: "Team Routine" },
       { value: "2-3w", label: "Launch Timeline" },
     ],
   },
   about: {
     title: "Direct AI Architecture for Business",
     jp: "• 私について •",
-    p1: "Businesses don't need fragile chatbots that make things up. A reliable AI assistant is 80% solid engineering — clean data, CRM/ERP integration, strict error protection — and 20% AI logic.",
-    p2: "You work directly with the engineer who studies your workflow, builds the system, and deploys it on your servers. No agency middlemen, no junior handoffs.",
+    p1: "Businesses don't need another fragile GPT wrapper that invents prices. A real production AI Agent means reliable integration with your spreadsheets, ERP, CRM, corporate guidelines, and strict safety rules: what is allowed and what is not.",
+    p2: "You work directly with the engineer who studies your workflow, writes the code, and deploys the system on your server. No agency markups, no junior handoffs.",
     cta: "Book Architecture Audit",
   },
   capabilities: {
-    leftTitle: "Core Solutions",
+    leftTitle: "How I Help Businesses",
     rightTitle: "Experience & Track",
     leftItems: [
       {
-        summary: "AI Sales & Support Assistants",
+        summary: "AI Sales & Booking Agents 24/7",
         content:
-          "24/7 assistants in Telegram, WhatsApp, and web chat that qualify leads, answer pricing questions accurately, check calendar slots, and book straight into your CRM.",
+          "Smart agents in Telegram, WhatsApp, and web chat that follow your price list, check open calendar slots, qualify leads, and book directly into CRM.",
       },
       {
         summary: "Automated Document & Quote Processing",
         content:
-          "Instant parsing of messy PDF/Excel requests, matching items against your price list or ERP, and generating ready commercial proposals in 1 minute.",
+          "Parsing messy incoming PDF/Excel requests, matching positions with your catalog or ERP, and generating ready commercial proposals in 1 minute.",
       },
       {
-        summary: "Web Platforms & Cloud Deployment",
+        summary: "Web Platforms & Cloud Systems",
         content:
-          "Full-stack web apps, client portals, and isolated cloud deployment (Next.js, Python, Docker, Yandex Cloud) built for speed and security.",
+          "Building custom websites, client portals, data scrapers, and resilient cloud deployments with zero downtime.",
       },
     ],
     rightItems: [
       {
         summary: "Viper Labs — Founder & Lead Engineer | 2025–2026",
         content:
-          "Building custom web platforms, cloud migrations, and internal AI automation tools for B2B clients.",
+          "Building custom web platforms, cloud migrations, and internal AI automation systems for B2B clients.",
       },
       {
         summary: "NFM Studio — Backend Systems Engineer | 2024",
         content:
-          "Designed, developed, and tested commercial web platforms and high-load backend APIs.",
+          "Designed, developed, and load-tested commercial web platforms and backend APIs.",
       },
       {
         summary: "Independent Full-Stack & Automation | 2023–2026",
         content:
-          "Delivered custom bots, data parsers, web services, and cloud infrastructure for clients across CIS and Europe.",
+          "Delivered Telegram bots, scraping pipelines, and web applications for clients across CIS and Europe.",
       },
     ],
   },
@@ -69,101 +69,37 @@ const en = {
     jp: "• スキル •",
   },
   projects: {
-    title: "Solutions & Case Studies",
+    title: "Live Projects & AI Solutions",
     jp: "• プロジェクト •",
+    liveTitle: "Production Projects",
+    blueprintsTitle: "Ready-to-Deploy AI Solutions for Your Niche",
     painLabel: "Problem:",
     solutionLabel: "Solution:",
-    viewFlow: "View Workflow",
-    testInTerminal: "Estimate in AI Terminal",
+    inputLabel: "Input:",
+    agentLabel: "AI Agent:",
+    outputLabel: "Result:",
+    viewFlow: "See Details",
+    testInTerminal: "Discuss with Camio",
     visitLink: "Open Website",
-    closeModal: "Close",
-    howItWorks: "How It Works",
-    items: [
-      {
-        id: "b2b-wholesale",
-        segment: "B2B Wholesale & Suppliers",
-        name: "AI Quote & Estimate Parser",
-        metric: "40 min -> 60 sec",
-        image: "/images/projects/b2b-parser.svg",
-        pain: "Requests arrive as messy PDFs, Excel files, and emails; managers spend hours matching items against 1C or price lists.",
-        solution:
-          "The system reads incoming files, matches items with your catalog, and builds a ready commercial quote in CRM in 1 minute.",
-        steps: [
-          "Client sends a PDF/Excel list by email or Telegram",
-          "AI extracts all positions, quantities, and matches them to your price list",
-          "Manager receives a ready draft quote inside CRM in 60 seconds",
-        ],
-        promptPreset:
-          "Estimate an AI quote parser from PDF/Excel into CRM for a wholesale company.",
-      },
-      {
-        id: "clinics-b2c",
-        segment: "Clinics & Service Businesses",
-        name: "24/7 AI Administrator & Booking",
-        metric: "15s Reply 24/7",
-        image: "/images/projects/clinic-qualifier.svg",
-        pain: "Admins miss evening leads, forget follow-ups, and get confused in complex service pricing across Telegram and WhatsApp.",
-        solution:
-          "24/7 AI assistant answers in 15 seconds, checks open slots, books into CRM, and hands off edge cases to staff.",
-        steps: [
-          "Client messages in Telegram, WhatsApp, or web chat at any hour",
-          "AI answers accurately using your price list and checks available slots",
-          "Appointment is automatically created in CRM with a reminder",
-        ],
-        promptPreset:
-          "Estimate a 24/7 AI booking assistant for a clinic or service business.",
-      },
-      {
-        id: "ecom-sellers",
-        segment: "E-Commerce & Marketplaces",
-        name: "AI Support & Analytics Copilot",
-        metric: "-70% Support Load",
-        image: "/images/projects/ecom-analytics.svg",
-        pain: "Endless repetitive questions about product specs and order statuses, plus manual stock and margin reports.",
-        solution:
-          "Customer support assistant connected to order status APIs + instant sales & stock analytics in plain language.",
-        steps: [
-          "Buyer asks about product specs or delivery status",
-          "AI fetches live order/stock data and replies accurately",
-          "Owner asks for top low-stock SKUs or margin stats in chat and gets instant charts",
-        ],
-        promptPreset:
-          "Estimate an AI support and sales analytics assistant for an e-commerce store.",
-      },
-      {
-        id: "realestate-hr",
-        segment: "Real Estate & HR Teams",
-        name: "AI Lead & Candidate Screening",
-        metric: "3x Faster Screening",
-        image: "/images/projects/hr-screening.svg",
-        pain: "Brokers and recruiters burn out manually filtering hundreds of non-target resumes and cold buyer messages.",
-        solution:
-          "Automated screening assistant scores applicants by your criteria and books Zoom calls only with qualified fits.",
-        steps: [
-          "Incoming resume or buyer inquiry arrives from job boards or ads",
-          "AI runs a quick structured qualification chat and assigns a fit score",
-          "Top matches automatically pick a time slot on your calendar",
-        ],
-        promptPreset:
-          "Estimate an AI screening assistant for real estate or HR.",
-      },
+    howItWorks: "Workflow",
+    liveItems: [
       {
         id: "viper-labs",
-        segment: "Engineering Studio",
+        segment: "Web Engineering Studio",
         name: "Viper Labs — Web & AI Ops",
-        metric: "Live in Cloud",
+        metric: "Production",
         image: "/images/projects/viperlabs-screen.png",
-        pain: "Companies need fast, reliable web platforms and internal automation across task trackers and messengers.",
+        pain: "Businesses need fast websites, custom portals, and internal workflow automation across messengers and trackers.",
         solution:
-          "Full-stack web studio (viperlabs.ru) hosted in Yandex Cloud + experience building Cindy, an internal Telegram AI bot for task & workflow automation.",
+          "Full-stack development studio (viperlabs.ru) running on Yandex Cloud + internal Telegram AI assistant built for team task orchestration.",
         steps: [
-          "Custom web interfaces and backend APIs deployed in isolated containers",
-          "Internal Telegram AI assistant connected to YouTrack, TickTick, and Git",
-          "Zero downtime, fast global access, and transparent cloud architecture",
+          "Custom high-converting websites and SaaS platforms built end-to-end",
+          "Internal Telegram AI agents integrated with YouTrack, TickTick, and Git",
+          "Reliable cloud deployment accessible globally",
         ],
         link: "https://viperlabs.ru/",
         promptPreset:
-          "Tell me about Viper Labs web development and internal Telegram AI bots.",
+          "Tell me about Viper Labs web development and custom AI agent integration.",
       },
       {
         id: "aetheria-ml",
@@ -173,7 +109,7 @@ const en = {
         image: "/images/projects/aetheriaml-screen.png",
         pain: "Preserving personal stories and family memory in an interactive digital format without AI hallucinations.",
         solution:
-          "Proprietary R&D product currently in active development: futuristic chrome UI, interview bot, and strict fact-grounded memory architecture.",
+          "Proprietary R&D product currently in active development: chrome/glass UI, empathetic interview bot, and fact-grounded memory architecture.",
         steps: [
           "Empathetic interview flow gathers real personal memories",
           "Structured memory base prevents the AI from inventing fake facts",
@@ -183,22 +119,89 @@ const en = {
         promptPreset:
           "What is the AetheriaML startup and what stage is it at?",
       },
+      {
+        id: "communicode",
+        segment: "Commercial Web Platform",
+        name: "Communicode — Mental Health Platform",
+        metric: "Shipped",
+        image: "/images/projects/communicode.png",
+        pain: "Need for an accessible, structured online support platform for users in Europe.",
+        solution:
+          "Full-stack web platform engineered for reliability, responsive UX, and clean data workflows.",
+        steps: [
+          "Structured user onboarding and content architecture",
+          "Responsive web interface for desktop and mobile users",
+          "Production release for European market",
+        ],
+        link: "https://communicode.es/",
+        promptPreset:
+          "Can you build a custom web platform or client portal for our business?",
+      },
+    ],
+    blueprints: [
+      {
+        id: "ecom-sellers",
+        segment: "E-Commerce & Marketplaces",
+        name: "Customer Support & Sales Analytics AI",
+        metric: "-70% Support Load",
+        input: "Customer questions on specs/delivery or owner chat queries",
+        agent: "Checks product catalog, live order APIs, and sales metrics",
+        output: "Instant accurate customer reply or stock/margin report in chat",
+        promptPreset:
+          "E-commerce customer support & sales analytics copilot",
+      },
+      {
+        id: "clinics-b2c",
+        segment: "Clinics & Service Businesses",
+        name: "24/7 AI Lead Qualifier & Booking Agent",
+        metric: "15s Reply 24/7",
+        input: "Evening/weekend inquiries in WhatsApp, Telegram, or web chat",
+        agent: "Answers strictly from price list, checks open calendar slots",
+        output: "Confirmed booking inside CRM + zero lost leads",
+        promptPreset:
+          "24/7 AI lead qualifier & calendar booking for services",
+      },
+      {
+        id: "b2b-wholesale",
+        segment: "B2B Wholesale & Suppliers",
+        name: "Automated PDF / Excel Quote Parser",
+        metric: "40 min -> 60 sec",
+        input: "Unstructured RFQ lists in PDF, Excel, or email",
+        agent: "Extracts SKU lines and matches them against ERP / price list",
+        output: "Ready-to-send draft commercial quote inside CRM",
+        promptPreset:
+          "Automated PDF/Excel quote & invoice parser into ERP/CRM",
+      },
+      {
+        id: "realestate-hr",
+        segment: "Real Estate & HR Teams",
+        name: "Candidate & Buyer Screening Agent",
+        metric: "3x Faster Filter",
+        input: "High volume of resumes or cold property buyer inquiries",
+        agent: "Runs structured screening dialog and scores fit criteria",
+        output: "Only qualified matches auto-book a Zoom call",
+        promptPreset:
+          "Automated screening agent for HR or real estate leads",
+      },
     ],
   },
   terminal: {
-    title: "STRYDEX // AI ASSISTANT",
-    jp: "• エージェント •",
+    title: "CAMIO // AI ASSISTANT",
+    status: "ONLINE",
+    jp: "• カミオ •",
     subtitle:
-      "Describe your business task — our AI will outline how automation works in your niche, timeline, and budget.",
-    placeholder: "Describe your business task or ask a question...",
+      "Ask Camio about AI Agent workflows for your niche, timelines, and pricing — and get a clear action plan.",
+    placeholder: "Describe your business task or ask Camio...",
     send: "Send",
-    thinking: "Thinking...",
+    thinking: "Camio is thinking...",
+    ctaContact: "Ready to start? Leave a request to Emir ↓",
     welcome:
-      "AI ASSISTANT ONLINE. I help Emir's clients estimate automation projects. Tell me your business type (wholesale, clinic, e-commerce, real estate) or task — I will suggest the workflow, timeline, and budget.",
+      "Hey! I am Camio, Emir's AI Assistant. Tell me what your business does and which routine slows your team down — I will map out the right AI Agent workflow, timeline, and budget.",
     presets: [
-      "Estimate an AI booking bot for a clinic",
-      "How does the PDF quote parser work?",
-      "What are the pricing and timelines?",
+      "24/7 AI lead qualifier & calendar booking for services",
+      "Automated PDF/Excel quote & invoice parser into ERP/CRM",
+      "E-commerce customer support & sales analytics copilot",
+      "Pricing, pilot timeline, and how we work together",
     ],
   },
   contact: {

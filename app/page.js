@@ -28,6 +28,13 @@ export default function Home() {
     }
   };
 
+  const handleJumpToContact = () => {
+    const el = document.getElementById("contact");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <main className="container">
       {/* Hero */}
@@ -86,7 +93,10 @@ export default function Home() {
           />
         </div>
         <div className="mt-6 flex flex-col items-start justify-center">
-          <Typewriter as="h2" className="text-3xl font-bold text-primary sm:text-4xl">
+          <Typewriter
+            as="h2"
+            className="text-3xl font-bold text-primary sm:text-4xl"
+          >
             {t.about.title}
           </Typewriter>
           <BlinkingText className="pb-4 text-lg">{t.about.jp}</BlinkingText>
@@ -106,7 +116,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Capabilities & Experience */}
+      {/* Capabilities & Experience (collapsed by default) */}
       <section className="grid grid-cols-1 gap-8 py-12 sm:grid-cols-2">
         <div className="flex flex-col items-center justify-start">
           <h2 className="mb-4 text-center text-3xl font-bold">
@@ -176,38 +186,45 @@ export default function Home() {
         </AutoPlay>
       </section>
 
-      {/* Projects / Case Studies */}
+      {/* Projects & B2B AI Blueprints */}
       <section id="cases" className="py-12">
         <div className="text-center">
           <h2 className="text-4xl font-bold">{t.projects.title}</h2>
           <BlinkingText>{t.projects.jp}</BlinkingText>
         </div>
-        <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {t.projects.items.map((project) => (
+
+        {/* 1. Real Live Projects with Real Screenshots */}
+        <h3 className="mt-8 mb-4 font-mono text-lg font-bold text-primary">
+          // {t.projects.liveTitle}
+        </h3>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {t.projects.liveItems.map((project) => (
             <Box
               key={project.id}
               className="flex flex-col justify-between p-3"
             >
               <div>
-                <div
-                  onClick={() => setSelectedCase(project)}
-                  className="mb-3 cursor-pointer overflow-hidden border border-text_color/30 bg-black"
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mb-3 block overflow-hidden border border-text_color/30 bg-black hover:opacity-100"
                 >
                   <img
                     alt={project.name}
                     src={project.image}
-                    className="h-44 w-full object-cover transition duration-300 hover:scale-105"
+                    className="h-44 w-full object-cover object-top transition duration-300 hover:scale-105"
                   />
-                </div>
+                </a>
                 <div className="mb-2 flex items-center justify-between gap-2 font-mono text-xs">
                   <span className="text-secondary/80">{project.segment}</span>
                   <span className="border border-primary/60 px-2 py-0.5 text-primary">
                     {project.metric}
                   </span>
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-primary">
+                <h4 className="mb-2 text-lg font-bold text-primary">
                   {project.name}
-                </h3>
+                </h4>
                 <p className="mb-2 text-xs leading-relaxed text-secondary/90">
                   <strong className="text-accent">{t.projects.painLabel}</strong>{" "}
                   {project.pain}
@@ -227,7 +244,7 @@ export default function Home() {
                 >
                   &gt; {t.projects.viewFlow}
                 </button>
-                {project.link ? (
+                {project.link && (
                   <a
                     href={project.link}
                     target="_blank"
@@ -236,22 +253,66 @@ export default function Home() {
                   >
                     {t.projects.visitLink} <BiLinkExternal />
                   </a>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => handleTestInTerminal(project.promptPreset)}
-                    className="text-text_color underline-offset-4 hover:underline"
-                  >
-                    {t.projects.testInTerminal}
-                  </button>
                 )}
+              </div>
+            </Box>
+          ))}
+        </div>
+
+        {/* 2. Honest Ready-to-Deploy B2B AI Blueprints (no fake screenshots) */}
+        <h3 className="mt-12 mb-4 font-mono text-lg font-bold text-primary">
+          // {t.projects.blueprintsTitle}
+        </h3>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {t.projects.blueprints.map((bp) => (
+            <Box
+              key={bp.id}
+              className="flex flex-col justify-between p-5"
+            >
+              <div>
+                <div className="mb-2 flex items-center justify-between gap-2 font-mono text-xs">
+                  <span className="text-secondary/80">{bp.segment}</span>
+                  <span className="border border-primary/60 px-2 py-0.5 text-primary">
+                    {bp.metric}
+                  </span>
+                </div>
+                <h4 className="mb-4 text-xl font-bold text-primary">
+                  {bp.name}
+                </h4>
+                <div className="space-y-2 border-l-2 border-text_color/40 pl-3 font-mono text-xs leading-relaxed">
+                  <p className="text-secondary/90">
+                    <span className="text-accent font-bold">
+                      {t.projects.inputLabel}
+                    </span>{" "}
+                    {bp.input}
+                  </p>
+                  <p className="text-secondary">
+                    <span className="text-text_color font-bold">
+                      {t.projects.agentLabel}
+                    </span>{" "}
+                    {bp.agent}
+                  </p>
+                  <p className="text-primary">
+                    <span className="font-bold">{t.projects.outputLabel}</span>{" "}
+                    {bp.output}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 flex justify-end border-t border-text_color/20 pt-3 font-mono text-xs">
+                <button
+                  type="button"
+                  onClick={() => handleTestInTerminal(bp.promptPreset)}
+                  className="text-primary underline-offset-4 hover:underline"
+                >
+                  &gt; {t.projects.testInTerminal}
+                </button>
               </div>
             </Box>
           ))}
         </div>
       </section>
 
-      {/* Case Workflow Modal */}
+      {/* Case Detail Modal */}
       {selectedCase && (
         <div
           className="fixed inset-0 z-40 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
@@ -279,13 +340,15 @@ export default function Home() {
                   <BiX />
                 </button>
               </div>
-              <div className="mb-4 overflow-hidden border border-text_color/30 bg-black">
-                <img
-                  src={selectedCase.image}
-                  alt={selectedCase.name}
-                  className="h-56 w-full object-cover"
-                />
-              </div>
+              {selectedCase.image && (
+                <div className="mb-4 overflow-hidden border border-text_color/30 bg-black">
+                  <img
+                    src={selectedCase.image}
+                    alt={selectedCase.name}
+                    className="h-56 w-full object-cover object-top"
+                  />
+                </div>
+              )}
               <div className="mb-4 font-mono text-sm">
                 <div className="mb-2 font-bold text-primary">
                   {t.projects.howItWorks}:
@@ -324,13 +387,16 @@ export default function Home() {
         </div>
       )}
 
-      {/* Interactive AI Terminal */}
+      {/* Interactive AI Assistant Camio */}
       <section id="ai-terminal" className="py-12">
         <div className="mb-6 text-center">
           <h2 className="text-4xl font-bold">{t.terminal.title}</h2>
           <p className="mt-2 text-base text-secondary">{t.terminal.subtitle}</p>
         </div>
-        <AgentTerminal initialPrompt={terminalPreset} />
+        <AgentTerminal
+          initialPrompt={terminalPreset}
+          onJumpToContact={handleJumpToContact}
+        />
       </section>
 
       {/* Contact */}

@@ -30,7 +30,6 @@ function renderFormattedLine(line, lineIdx) {
         }
         return <React.Fragment key={idx}>{part}</React.Fragment>;
       })}
-      {lineIdx !== undefined ? "\n" : null}
     </React.Fragment>
   );
 }
@@ -41,7 +40,7 @@ function FormattedMessage({ content }) {
     <div className="whitespace-pre-wrap leading-relaxed">
       {lines.map((line, i) => (
         <React.Fragment key={i}>
-          {renderFormattedLine(line)}
+          {renderFormattedLine(line, i)}
           {i < lines.length - 1 ? "\n" : null}
         </React.Fragment>
       ))}
@@ -49,14 +48,15 @@ function FormattedMessage({ content }) {
   );
 }
 
-const AgentTerminal = ({ initialPrompt = "" }) => {
+const AgentTerminal = ({ initialPrompt = "", onJumpToContact }) => {
   const { lang, t } = useLanguage();
   const [messages, setMessages] = useState([
     { role: "assistant", content: t.terminal.welcome },
   ]);
-  const [input, setInput] = useState(initialPrompt);
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollBoxRef = useRef(null);
+  const lastInitialRef = useRef("");
 
   useEffect(() => {
     setMessages((prev) => {
@@ -66,12 +66,6 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
       return prev;
     });
   }, [lang, t.terminal.welcome]);
-
-  useEffect(() => {
-    if (initialPrompt) {
-      setInput(initialPrompt);
-    }
-  }, [initialPrompt]);
 
   useEffect(() => {
     if (messages.length > 1 && scrollBoxRef.current) {
@@ -122,6 +116,14 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
     }
   };
 
+  useEffect(() => {
+    if (initialPrompt && initialPrompt !== lastInitialRef.current) {
+      lastInitialRef.current = initialPrompt;
+      sendMessage(initialPrompt);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialPrompt]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     sendMessage();
@@ -129,14 +131,41 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
 
   return (
     <Box className="w-full p-4 sm:p-6">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-text_color/30 pb-3">
-        <div className="flex items-center gap-2 font-mono text-sm text-primary">
-          <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-primary"></span>
-          <span>{t.terminal.title}</span>
+      {/* Camio Header */}
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-text_color/30 pb-3">
+        <div className="flex items-center gap-3">
+          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-primary shadow-[0_0_12px_rgba(222,254,71,0.4)]">
+            <img
+              src="/images/camio-avatar.png"
+              alt="Camio AI"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 font-mono text-sm font-bold text-primary">
+              <span>{t.terminal.title}</span>
+              <span className="inline-flex items-center gap-1 border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[10px]">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary"></span>
+                {t.terminal.status}
+              </span>
+            </div>
+            <div className="font-mono text-xs text-secondary/70">
+              {t.terminal.jp}
+            </div>
+          </div>
         </div>
-        <span className="font-mono text-xs text-secondary/70">
-          {t.terminal.jp}
-        </span>
+        <a
+          href="#contact"
+          onClick={(e) => {
+            if (onJumpToContact) {
+              e.preventDefault();
+              onJumpToContact();
+            }
+          }}
+          className="border border-primary/50 bg-primary/10 px-3 py-1.5 font-mono text-xs text-primary transition hover:bg-primary hover:text-background"
+        >
+          {t.terminal.ctaContact}
+        </a>
       </div>
 
       {/* Preset chips */}
@@ -146,7 +175,7 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
             key={preset}
             type="button"
             onClick={() => sendMessage(preset)}
-            className="border border-text_color/40 bg-background/80 px-3 py-1.5 font-mono text-xs text-secondary transition hover:border-primary hover:text-primary"
+            className="border border-text_color/40 bg-background/80 px-3 py-1.5 text-left font-mono text-xs text-secondary transition hover:border-primary hover:text-primary"
           >
             &gt; {preset}
           </button>
@@ -156,32 +185,48 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
       {/* Messages inside self-contained scrollable box */}
       <div
         ref={scrollBoxRef}
-        className="mb-4 flex h-80 flex-col gap-3 overflow-y-auto border border-text_color/20 bg-black/50 p-4 font-mono text-sm"
+        className="mb-4 flex h-80 flex-col gap-4 overflow-y-auto border border-text_color/20 bg-black/50 p-4 font-mono text-sm sm:h-96"
       >
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`max-w-[90%] ${
-              msg.role === "user"
-                ? "self-end border-r-2 border-primary pr-3 text-right text-primary"
-                : "self-start border-l-2 border-text_color pl-3 text-secondary"
-            }`}
-          >
-            <div className="mb-1 text-[11px] uppercase opacity-60">
-              {msg.role === "user"
-                ? lang === "ru"
-                  ? "КЛИЕНТ"
-                  : "CLIENT"
-                : lang === "ru"
-                  ? "AI-АССИСТЕНТ"
-                  : "AI_ASSISTANT"}
+        {messages.map((msg, idx) =>
+          msg.role === "user" ? (
+            <div
+              key={idx}
+              className="max-w-[85%] self-end border-r-2 border-primary pr-3 text-right text-primary"
+            >
+              <div className="mb-1 text-[11px] uppercase opacity-60">
+                {lang === "ru" ? "ВЫ" : "YOU"}
+              </div>
+              <FormattedMessage content={msg.content} />
             </div>
-            <FormattedMessage content={msg.content} />
-          </div>
-        ))}
+          ) : (
+            <div
+              key={idx}
+              className="flex max-w-[92%] items-start gap-3 self-start"
+            >
+              <img
+                src="/images/camio-avatar.png"
+                alt="Camio"
+                className="mt-1 h-8 w-8 shrink-0 rounded-full border border-primary/60 object-cover"
+              />
+              <div className="border-l-2 border-text_color pl-3 text-secondary">
+                <div className="mb-1 text-[11px] font-bold uppercase text-primary/80">
+                  {lang === "ru" ? "КАМИО" : "CAMIO"}
+                </div>
+                <FormattedMessage content={msg.content} />
+              </div>
+            </div>
+          ),
+        )}
         {loading && (
-          <div className="self-start pl-3 text-xs text-primary animate-pulse">
-            {t.terminal.thinking}
+          <div className="flex items-center gap-3 self-start">
+            <img
+              src="/images/camio-avatar.png"
+              alt="Camio"
+              className="h-8 w-8 shrink-0 animate-pulse rounded-full border border-primary/60 object-cover"
+            />
+            <div className="pl-1 text-xs text-primary animate-pulse">
+              {t.terminal.thinking}
+            </div>
           </div>
         )}
       </div>
