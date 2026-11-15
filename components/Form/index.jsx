@@ -8,6 +8,9 @@ import { EMAILJS_CONFIG } from "@/data/contants";
 import { SiSpinrilla } from "react-icons/si";
 import { useLanguage } from "@/context/LanguageContext";
 
+const VERCEL_CONTACT_ENDPOINT =
+  "https://sxfolio3-git-v2-ai-architect-strydexs-projects.vercel.app/api/contact";
+
 const Form = () => {
   const { t } = useLanguage();
   const [name, setName] = useState("");
@@ -29,7 +32,7 @@ const Form = () => {
 
     let delivered = false;
 
-    // 1. Server-side Telegram relay (token kept securely on server)
+    // 1. Primary: Same-origin server API (/api/contact)
     try {
       const apiRes = await fetch("/api/contact", {
         method: "POST",
@@ -40,7 +43,20 @@ const Form = () => {
       if (apiData?.ok) delivered = true;
     } catch {}
 
-    // 2. EmailJS fallback
+    // 2. Secondary: Direct client-to-Vercel relay (when user has VPN / outside RU)
+    if (!delivered) {
+      try {
+        const vRes = await fetch(VERCEL_CONTACT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, message }),
+        });
+        const vData = await vRes.json();
+        if (vData?.ok) delivered = true;
+      } catch {}
+    }
+
+    // 3. Tertiary: EmailJS fallback
     if (!delivered) {
       try {
         await emailjs.send(

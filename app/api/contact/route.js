@@ -1,38 +1,59 @@
 import { NextResponse } from "next/server";
-import dns from "node:dns";
+import https from "node:https";
 
-try {
-  dns.setDefaultResultOrder("ipv4first");
-} catch {}
-
-async function sendDirectTelegram(botToken, chatId, text) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 4000);
-  try {
-    const res = await fetch(
-      `https://api.telegram.org/bot${botToken}/sendMessage`,
+function postJsonIPv4(urlStr, payload, extraHeaders = {}) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(urlStr);
+    const body = JSON.stringify(payload);
+    const req = https.request(
       {
+        hostname: url.hostname,
+        port: 443,
+        path: url.pathname + url.search,
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text }),
-        signal: controller.signal,
+        family: 4,
+        timeout: 6000,
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(body),
+          ...extraHeaders,
+        },
+      },
+      (res) => {
+        let data = "";
+        res.on("data", (chunk) => (data += chunk));
+        res.on("end", () => {
+          resolve({ status: res.statusCode || 500, body: data });
+        });
       },
     );
-    return res.ok;
-  } catch {
-    return false;
-  } finally {
-    clearTimeout(timer);
-  }
+    req.on("timeout", () => {
+      req.destroy(new Error("ETIMEDOUT"));
+    });
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, x-relay-secret",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
 }
 
 export async function POST(req) {
+  const errors = [];
   try {
     const { name, email, message } = await req.json();
     if (!name || !email || !message) {
       return NextResponse.json(
         { ok: false, error: "Missing required fields" },
-        { status: 400 },
+        { status: 400, headers: CORS_HEADERS },
       );
     }
 
@@ -43,7 +64,10 @@ export async function POST(req) {
     const incomingSecret = req.headers.get("x-relay-secret");
 
     if (incomingSecret && relaySecret && incomingSecret !== relaySecret) {
-      return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
+      return NextResponse.json(
+        { ok: false, error: "Forbidden" },
+        { status: 403, headers: CORS_HEADERS },
+      );
     }
 
     const text = [
@@ -54,38 +78,53 @@ export async function POST(req) {
       `⏱ Время: ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })} MSK`,
     ].join("\n");
 
+    console.log("[LEAD_RECEIVED]", JSON.stringify({ name, email, message }));
+
     if (botToken && chatId) {
-      const ok = await sendDirectTelegram(botToken, chatId, text);
-      if (ok) {
-        return NextResponse.json({ ok: true, via: "direct-telegram" });
+      try {
+        const tgRes = await postJsonIPv4(
+          `https://api.telegram.org/bot${botToken}/sendMessage`,
+          { chat_id: chatId, text },
+        );
+        if (tgRes.status >= 200 && tgRes.status < 300) {
+          return NextResponse.json(
+            { ok: true, via: "direct-telegram" },
+            { headers: CORS_HEADERS },
+          );
+        }
+        errors.push(`tg:${tgRes.status}`);
+      } catch (err) {
+        errors.push(`tg:${err?.code || err?.message}`);
       }
     }
 
     if (relayUrl && !incomingSecret) {
       try {
-        const relayRes = await fetch(relayUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(relaySecret ? { "x-relay-secret": relaySecret } : {}),
-          },
-          body: JSON.stringify({ name, email, message }),
-        });
-        const relayData = await relayRes.json();
-        if (relayRes.ok && relayData?.ok) {
-          return NextResponse.json({ ok: true, via: "vercel-relay" });
+        const relayRes = await postJsonIPv4(
+          relayUrl,
+          { name, email, message },
+          relaySecret ? { "x-relay-secret": relaySecret } : {},
+        );
+        if (relayRes.status >= 200 && relayRes.status < 300) {
+          return NextResponse.json(
+            { ok: true, via: "vercel-relay" },
+            { headers: CORS_HEADERS },
+          );
         }
-      } catch {}
+        errors.push(`relay:${relayRes.status}`);
+      } catch (err) {
+        errors.push(`relay:${err?.code || err?.message}`);
+      }
     }
 
     return NextResponse.json(
-      { ok: false, error: "Delivery failed" },
-      { status: 502 },
+      { ok: false, error: errors.join("; ") || "Delivery failed" },
+      { status: 502, headers: CORS_HEADERS },
     );
   } catch (e) {
     return NextResponse.json(
       { ok: false, error: e?.message || "Server error" },
-      { status: 500 },
+      { status: 500, headers: CORS_HEADERS },
     );
   }
 }
