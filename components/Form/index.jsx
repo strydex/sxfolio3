@@ -22,33 +22,45 @@ const Form = () => {
     setMessage("");
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setIsSending(true);
     setStatus("");
-    const templateParams = {
-      from_name: name,
-      email: email,
-      subject: "New B2B Inquiry from sxfolio",
-      message: message,
-    };
-    emailjs
-      .send(
+
+    let delivered = false;
+
+    try {
+      const apiRes = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      const apiData = await apiRes.json();
+      if (apiData?.ok) delivered = true;
+    } catch {}
+
+    try {
+      await emailjs.send(
         EMAILJS_CONFIG.serviceID,
         EMAILJS_CONFIG.templateID,
-        templateParams,
+        {
+          from_name: name,
+          email,
+          subject: "New B2B Inquiry from sxfolio",
+          message,
+        },
         EMAILJS_CONFIG.publicKey,
-      )
-      .then(
-        () => {
-          setStatus(t.contact.sent);
-          clear();
-        },
-        () => {
-          setStatus(t.contact.error);
-        },
-      )
-      .finally(() => setIsSending(false));
+      );
+      delivered = true;
+    } catch {}
+
+    if (delivered) {
+      setStatus(t.contact.sent);
+      clear();
+    } else {
+      setStatus(t.contact.error);
+    }
+    setIsSending(false);
   };
 
   return (

@@ -5,6 +5,50 @@ import { useLanguage } from "@/context/LanguageContext";
 import Box from "@/components/Box";
 import Button from "@/components/Button";
 
+function renderFormattedLine(line, lineIdx) {
+  const cleaned = line.replace(/^\s*\*\s+/, "• ");
+  const parts = cleaned.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  return (
+    <React.Fragment key={lineIdx}>
+      {parts.map((part, idx) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return (
+            <strong key={idx} className="font-bold text-primary">
+              {part.slice(2, -2)}
+            </strong>
+          );
+        }
+        if (part.startsWith("`") && part.endsWith("`")) {
+          return (
+            <code
+              key={idx}
+              className="border border-text_color/30 bg-background px-1.5 py-0.5 text-primary"
+            >
+              {part.slice(1, -1)}
+            </code>
+          );
+        }
+        return <React.Fragment key={idx}>{part}</React.Fragment>;
+      })}
+      {lineIdx !== undefined ? "\n" : null}
+    </React.Fragment>
+  );
+}
+
+function FormattedMessage({ content }) {
+  const lines = String(content || "").split("\n");
+  return (
+    <div className="whitespace-pre-wrap leading-relaxed">
+      {lines.map((line, i) => (
+        <React.Fragment key={i}>
+          {renderFormattedLine(line)}
+          {i < lines.length - 1 ? "\n" : null}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
 const AgentTerminal = ({ initialPrompt = "" }) => {
   const { lang, t } = useLanguage();
   const [messages, setMessages] = useState([
@@ -29,7 +73,6 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
     }
   }, [initialPrompt]);
 
-  // Only scroll inside the chat box itself, never scroll the whole page on initial render
   useEffect(() => {
     if (messages.length > 1 && scrollBoxRef.current) {
       scrollBoxRef.current.scrollTop = scrollBoxRef.current.scrollHeight;
@@ -118,7 +161,7 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`max-w-[90%] whitespace-pre-wrap leading-relaxed ${
+            className={`max-w-[90%] ${
               msg.role === "user"
                 ? "self-end border-r-2 border-primary pr-3 text-right text-primary"
                 : "self-start border-l-2 border-text_color pl-3 text-secondary"
@@ -129,9 +172,11 @@ const AgentTerminal = ({ initialPrompt = "" }) => {
                 ? lang === "ru"
                   ? "КЛИЕНТ"
                   : "CLIENT"
-                : "AI_ASSISTANT"}
+                : lang === "ru"
+                  ? "AI-АССИСТЕНТ"
+                  : "AI_ASSISTANT"}
             </div>
-            {msg.content}
+            <FormattedMessage content={msg.content} />
           </div>
         ))}
         {loading && (

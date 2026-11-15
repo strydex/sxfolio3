@@ -152,7 +152,7 @@ const en = {
         segment: "Engineering Studio",
         name: "Viper Labs — Web & AI Ops",
         metric: "Live in Cloud",
-        image: "/images/projects/viper.gif",
+        image: "/images/projects/viperlabs-screen.png",
         pain: "Companies need fast, reliable web platforms and internal automation across task trackers and messengers.",
         solution:
           "Full-stack web studio (viperlabs.ru) hosted in Yandex Cloud + experience building Cindy, an internal Telegram AI bot for task & workflow automation.",
@@ -170,7 +170,7 @@ const en = {
         segment: "R&D Startup (In Development)",
         name: "AetheriaML — Digital Twins",
         metric: "In Development",
-        image: "/images/projects/aetheriaml.svg",
+        image: "/images/projects/aetheriaml-screen.png",
         pain: "Preserving personal stories and family memory in an interactive digital format without AI hallucinations.",
         solution:
           "Proprietary R&D product currently in active development: futuristic chrome UI, interview bot, and strict fact-grounded memory architecture.",
@@ -179,7 +179,7 @@ const en = {
           "Structured memory base prevents the AI from inventing fake facts",
           "Interactive digital diary web experience (currently in R&D)",
         ],
-        link: "https://aetheriaml.vercel.app/",
+        link: "https://aetheriaml.com/",
         promptPreset:
           "What is the AetheriaML startup and what stage is it at?",
       },

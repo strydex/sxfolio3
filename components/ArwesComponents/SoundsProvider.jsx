@@ -1,33 +1,30 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import React, { useEffect } from "react";
 
 const SoundsProvider = () => {
-  const pathname = usePathname();
-
   useEffect(() => {
-    const click = document.getElementById("sound-click");
-    if (!click) return;
-    const playClick = () => {
-      click.play()?.catch(() => {});
+    const clickAudio = document.getElementById("sound-click");
+    if (!clickAudio) return;
+
+    // Single delegated listener for the entire document
+    const handleGlobalClick = (e) => {
+      if (e.target && e.target.closest("button, a, summary")) {
+        clickAudio.currentTime = 0;
+        clickAudio.play()?.catch(() => {});
+      }
     };
-    const elements = document.querySelectorAll("button, a, summary");
-    elements.forEach((el) => el.addEventListener("click", playClick));
+
+    document.addEventListener("click", handleGlobalClick, { passive: true });
     return () => {
-      elements.forEach((el) => el.removeEventListener("click", playClick));
+      document.removeEventListener("click", handleGlobalClick);
     };
-  }, [pathname]);
-
-  useEffect(() => {
-    const intro = document.getElementById("sound-intro");
-    intro?.play()?.catch(() => {});
   }, []);
 
   return (
     <>
-      <audio id="sound-intro" src="/sounds/intro.mp3"></audio>
-      <audio id="sound-click" src="/sounds/click.mp3"></audio>
+      <audio id="sound-intro" src="/sounds/intro.mp3" preload="none"></audio>
+      <audio id="sound-click" src="/sounds/click.mp3" preload="none"></audio>
     </>
   );
 };
