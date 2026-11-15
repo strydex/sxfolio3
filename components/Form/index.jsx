@@ -30,36 +30,24 @@ const Form = () => {
     setIsSending(true);
     setStatus("");
 
-    let delivered = false;
-
-    // 1. Primary: Same-origin server API (/api/contact)
-    try {
-      const apiRes = await fetch("/api/contact", {
+    const results = await Promise.allSettled([
+      // 1. Direct client -> Vercel relay (instant Telegram push if reachable)
+      fetch(VERCEL_CONTACT_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, message }),
-      });
-      const apiData = await apiRes.json();
-      if (apiData?.ok) delivered = true;
-    } catch {}
+      }).then((r) => r.json()),
 
-    // 2. Secondary: Direct client-to-Vercel relay (when user has VPN / outside RU)
-    if (!delivered) {
-      try {
-        const vRes = await fetch(VERCEL_CONTACT_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, message }),
-        });
-        const vData = await vRes.json();
-        if (vData?.ok) delivered = true;
-      } catch {}
-    }
+      // 2. Same-origin server API (saves to Yandex Object Storage / sends TG)
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      }).then((r) => r.json()),
 
-    // 3. Tertiary: EmailJS fallback
-    if (!delivered) {
-      try {
-        await emailjs.send(
+      // 3. EmailJS backup
+      emailjs
+        .send(
           EMAILJS_CONFIG.serviceID,
           EMAILJS_CONFIG.templateID,
           {
@@ -69,10 +57,13 @@ const Form = () => {
             message,
           },
           EMAILJS_CONFIG.publicKey,
-        );
-        delivered = true;
-      } catch {}
-    }
+        )
+        .then(() => ({ ok: true })),
+    ]);
+
+    const delivered = results.some(
+      (r) => r.status === "fulfilled" && r.value?.ok,
+    );
 
     if (delivered) {
       setStatus(t.contact.sent);

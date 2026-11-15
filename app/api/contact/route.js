@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import https from "node:https";
 
-function postJsonIPv4(urlStr, payload, extraHeaders = {}) {
+function requestIPv4(urlStr, method, payload, extraHeaders = {}) {
   return new Promise((resolve, reject) => {
     const url = new URL(urlStr);
-    const body = JSON.stringify(payload);
+    const body = typeof payload === "string" ? payload : JSON.stringify(payload);
     const req = https.request(
       {
         hostname: url.hostname,
         port: 443,
         path: url.pathname + url.search,
-        method: "POST",
+        method,
         family: 4,
-        timeout: 6000,
+        timeout: 4500,
         headers: {
           "Content-Type": "application/json",
           "Content-Length": Buffer.byteLength(body),
@@ -27,13 +27,32 @@ function postJsonIPv4(urlStr, payload, extraHeaders = {}) {
         });
       },
     );
-    req.on("timeout", () => {
-      req.destroy(new Error("ETIMEDOUT"));
-    });
+    req.on("timeout", () => req.destroy(new Error("ETIMEDOUT")));
     req.on("error", reject);
     req.write(body);
     req.end();
   });
+}
+
+async function getYandexMetadataToken() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 1500);
+  try {
+    const res = await fetch(
+      "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token",
+      {
+        headers: { "Metadata-Flavor": "Google" },
+        signal: controller.signal,
+      },
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.access_token || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 const CORS_HEADERS = {
@@ -61,6 +80,7 @@ export async function POST(req) {
     const chatId = process.env.TELEGRAM_CHAT_ID;
     const relayUrl = process.env.TELEGRAM_RELAY_URL;
     const relaySecret = process.env.RELAY_SECRET;
+    const bucketName = process.env.LEADS_BUCKET || "sxfolio-leads-strydex";
     const incomingSecret = req.headers.get("x-relay-secret");
 
     if (incomingSecret && relaySecret && incomingSecret !== relaySecret) {
@@ -70,6 +90,7 @@ export async function POST(req) {
       );
     }
 
+    const createdAt = new Date().toISOString();
     const text = [
       "🔥 Новая заявка с портфолио (sxfolio):",
       `👤 Имя: ${name}`,
@@ -78,12 +99,14 @@ export async function POST(req) {
       `⏱ Время: ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })} MSK`,
     ].join("\n");
 
-    console.log("[LEAD_RECEIVED]", JSON.stringify({ name, email, message }));
+    console.log("[LEAD_RECEIVED]", JSON.stringify({ name, email, message, createdAt }));
 
+    // 1. Direct Telegram (works on Vercel / outside RU)
     if (botToken && chatId) {
       try {
-        const tgRes = await postJsonIPv4(
+        const tgRes = await requestIPv4(
           `https://api.telegram.org/bot${botToken}/sendMessage`,
+          "POST",
           { chat_id: chatId, text },
         );
         if (tgRes.status >= 200 && tgRes.status < 300) {
@@ -98,10 +121,12 @@ export async function POST(req) {
       }
     }
 
+    // 2. Vercel Relay (when direct TG blocked)
     if (relayUrl && !incomingSecret) {
       try {
-        const relayRes = await postJsonIPv4(
+        const relayRes = await requestIPv4(
           relayUrl,
+          "POST",
           { name, email, message },
           relaySecret ? { "x-relay-secret": relaySecret } : {},
         );
@@ -114,6 +139,29 @@ export async function POST(req) {
         errors.push(`relay:${relayRes.status}`);
       } catch (err) {
         errors.push(`relay:${err?.code || err?.message}`);
+      }
+    }
+
+    // 3. Yandex Object Storage (100% reliable internal Yandex Cloud storage)
+    const iamToken = await getYandexMetadataToken();
+    if (iamToken && bucketName) {
+      try {
+        const key = `leads/${createdAt.replace(/[:.]/g, "-")}.json`;
+        const s3Res = await requestIPv4(
+          `https://storage.yandexcloud.net/${bucketName}/${key}`,
+          "PUT",
+          { name, email, message, createdAt },
+          { "X-YaCloud-SubjectToken": iamToken },
+        );
+        if (s3Res.status >= 200 && s3Res.status < 300) {
+          return NextResponse.json(
+            { ok: true, via: "yandex-storage" },
+            { headers: CORS_HEADERS },
+          );
+        }
+        errors.push(`s3:${s3Res.status}`);
+      } catch (err) {
+        errors.push(`s3:${err?.code || err?.message}`);
       }
     }
 
