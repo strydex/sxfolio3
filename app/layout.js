@@ -34,6 +34,13 @@ export const metadata = {
   title: "Emir Strydex — AI Solutions & Full-Stack Systems",
   description:
     "AI assistants, automated sales & CRM pipelines, and web platforms for modern business.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({ children }) {

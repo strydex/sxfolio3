@@ -6,12 +6,6 @@ x-yc-apigateway:
   service_account_id: ajevbr3ijm22oagsjpqf
   execution_timeout: 30s
 paths:
-  /:
-    x-yc-apigateway-any-method:
-      x-yc-apigateway-integration:
-        type: serverless_containers
-        container_id: bba7mdi2100imdimcmd4
-        service_account_id: ajevbr3ijm22oagsjpqf
   /{path+}:
     x-yc-apigateway-any-method:
       x-yc-apigateway-integration:
@@ -24,3 +18,9 @@ paths:
         required: true
         schema:
           type: string
+  /:
+    x-yc-apigateway-any-method:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bba7mdi2100imdimcmd4
+        service_account_id: ajevbr3ijm22oagsjpqf
